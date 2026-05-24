@@ -1,0 +1,54 @@
+.disciplinary-page {
+	display: grid;
+	gap: 18px;
+}
+
+.disciplinary-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 16px;
+}
+
+.disciplinary-card {
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.disciplinary-card__title {
+	margin: 0 0 6px;
+	font-size: 1rem;
+	font-weight: 800;
+	color: var(--text);
+}
+
+.timeline {
+	margin: 0;
+	padding-left: 20px;
+	display: grid;
+	gap: 12px;
+	color: var(--text);
+}
+
+.report-panel__frame {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 16px;
+	min-height: 700px;
+	background: #fff;
+}
+
+.report-panel__frame iframe {
+	display: block;
+	width: 100%;
+	height: 700px;
+	border: 0;
+}
+
+@media (max-width: 960px) {
+	.disciplinary-grid {
+		grid-template-columns: 1fr;
+	}
+}
