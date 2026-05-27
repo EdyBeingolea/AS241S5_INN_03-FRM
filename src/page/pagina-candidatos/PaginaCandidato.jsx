@@ -12,11 +12,12 @@ function PaginaCandidato() {
     const [totalPaginas, setTotalPaginas] = useState(1)
     const [totalRegistros, setTotalRegistros] = useState(0)
     const [limite, setLimite] = useState(10)
+    const [estadoFiltro, setEstadoFiltro] = useState('todos')
 
-    const cargarRegistros = async (pagina = 1, pageSize = limite) => {
+    const cargarRegistros = async (pagina = 1, pageSize = limite, filtro = estadoFiltro) => {
         try {
             setLoading(true)
-            const res = await listaCandidato(pagina, pageSize)
+            const res = await listaCandidato(pagina, pageSize, filtro)
             setRegistros(Array.isArray(res?.data) ? res.data : [])
             setPaginaActual(res?.pagina_actual || pagina)
             setTotalPaginas(res?.total_paginas || 1)
@@ -30,8 +31,8 @@ function PaginaCandidato() {
     }
 
     useEffect(() => {
-        cargarRegistros(paginaActual, limite)
-    }, [paginaActual, limite])
+        cargarRegistros(paginaActual, limite, estadoFiltro)
+    }, [paginaActual, limite, estadoFiltro])
 
     const goToPage = (page) => {
         const nextPage = Math.min(Math.max(1, page), totalPaginas)
@@ -40,6 +41,11 @@ function PaginaCandidato() {
 
     const handleLimitChange = (event) => {
         setLimite(Number(event.target.value))
+        setPaginaActual(1)
+    }
+
+    const handleFilterChange = (nextFilter) => {
+        setEstadoFiltro(nextFilter)
         setPaginaActual(1)
     }
 
@@ -119,9 +125,27 @@ function PaginaCandidato() {
                 <article className="panel">
                     <h3>Filtros rápidos</h3>
                     <div className="chip-row">
-                        <button type="button" className="chip chip--active">Todos</button>
-                        <button type="button" className="chip">Activos</button>
-                        <button type="button" className="chip">Inactivos</button>
+                        <button
+                            type="button"
+                            className={`chip ${estadoFiltro === 'todos' ? 'chip--active' : ''}`}
+                            onClick={() => handleFilterChange('todos')}
+                        >
+                            Todos
+                        </button>
+                        <button
+                            type="button"
+                            className={`chip ${estadoFiltro === 'activo' ? 'chip--active' : ''}`}
+                            onClick={() => handleFilterChange('activo')}
+                        >
+                            Activos
+                        </button>
+                        <button
+                            type="button"
+                            className={`chip ${estadoFiltro === 'no activo' ? 'chip--active' : ''}`}
+                            onClick={() => handleFilterChange('no activo')}
+                        >
+                            Inactivos
+                        </button>
                     </div>
                 </article>
 

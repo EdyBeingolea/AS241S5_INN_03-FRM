@@ -10,6 +10,7 @@ const normalizeStatus = (value) => {
 
     if (status === "activo") return "Activo";
     if (status === "inactivo") return "Inactivo";
+    if (status === "no activo") return "No activo";
 
     return status.charAt(0).toUpperCase() + status.slice(1);
 };
@@ -43,19 +44,37 @@ const buildPaginatedResponse = (items, page, limit) => {
     };
 };
 
-export const listaCandidato = async (page = 1, limit = DEFAULT_PAGE_SIZE) => {
+const normalizeFilter = (filter) => {
+    if (!filter || filter === "todos") return "todos";
+
+    const value = String(filter).trim().toLowerCase();
+
+    if (value === "activo") return "activo";
+    if (value === "inactivo" || value === "no activo") return "no activo";
+
+    return value;
+};
+
+export const listaCandidato = async (page = 1, limit = DEFAULT_PAGE_SIZE, estadoFiltro = "todos") => {
     try {
         const response = await axios.get(`${API_URL}/candidato/lista`);
         const payload = response?.data;
+        const filterValue = normalizeFilter(estadoFiltro);
         let items = [];
 
         if (payload && (payload.data || payload.cantidad_total)) {
             items = Array.isArray(payload.data) ? payload.data.map(normalizeItem) : [];
+            if (filterValue !== "todos") {
+                items = items.filter((item) => item.estado.trim().toLowerCase() === filterValue);
+            }
             return buildPaginatedResponse(items, page, limit);
         }
 
         if (Array.isArray(payload)) {
             items = payload.map(normalizeItem);
+            if (filterValue !== "todos") {
+                items = items.filter((item) => item.estado.trim().toLowerCase() === filterValue);
+            }
             return buildPaginatedResponse(items, page, limit);
         }
 
