@@ -35,21 +35,10 @@ const students = [
 function PaginaInicio() {
     return (
         <div className="dashboard-page">
-            <div className="dashboard-page__hero">
-                <div>
-                    <p className="eyebrow">Resumen ejecutivo</p>
-                    <h2>Panel de control académico</h2>
-                    <p>Vista general del estado estudiantil y disciplinario.</p>
-                </div>
-                <div className="dashboard-page__hero-actions">
-                    <button type="button" className="button button--ghost">Últimos 30 días</button>
-                    <button type="button" className="button button--primary">+ Nuevo registro</button>
-                </div>
-            </div>
-
             <section className="panel report-panel">
                 <div className="report-panel__frame">
                     <iframe
+                        width="600" height="300"
                         src={reportUrl}
                         title="Reporte de inscripciones deportivas"
                         loading="lazy"
@@ -59,102 +48,6 @@ function PaginaInicio() {
                 </div>
             </section>
 
-            <section className="stats-grid" aria-label="Indicadores principales">
-                {stats.map((stat) => (
-                    <article key={stat.label} className="stat-card">
-                        <p>{stat.label}</p>
-                        <strong>{stat.value}</strong>
-                        <span>{stat.detail}</span>
-                    </article>
-                ))}
-            </section>
-
-            <section className="dashboard-grid">
-                <article className="panel panel--chart">
-                    <div className="panel__header">
-                        <div>
-                            <h3>Distribución por disciplina</h3>
-                            <p>Número de estudiantes inscritos actualmente.</p>
-                        </div>
-                        <button type="button" className="icon-button" aria-label="Más opciones">⋮</button>
-                    </div>
-
-                    <div className="chart-card" aria-hidden="true">
-                        {monthly.map((point, index) => (
-                            <div key={point.month} className="chart-card__point-group">
-                                <div className="chart-card__bar" style={{ height: `${40 + point.value / 2}px` }}>
-                                    <span className="chart-card__dot" style={{ bottom: `${point.value / 2}px` }} />
-                                </div>
-                                <span>{point.month}</span>
-                                {index < monthly.length - 1 ? <i className="chart-card__link" /> : null}
-                            </div>
-                        ))}
-                    </div>
-                </article>
-
-                <article className="panel panel--activity">
-                    <div className="panel__header">
-                        <div>
-                            <h3>Actividad reciente</h3>
-                            <p>Eventos importantes del sistema.</p>
-                        </div>
-                    </div>
-
-                    <ul className="activity-list">
-                        {activities.map((activity, index) => (
-                            <li key={activity}>
-                                <span className="activity-list__index">0{index + 1}</span>
-                                <span>{activity}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </article>
-            </section>
-
-
-
-            <section className="panel panel--table">
-                <div className="panel__header">
-                    <div>
-                        <h3>Últimos alumnos registrados</h3>
-                        <p>Movimientos más recientes del sistema académico.</p>
-                    </div>
-                    <button type="button" className="text-link">Ver todos los registros</button>
-                </div>
-
-                <div className="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Fecha-corte</th>
-                                <th>Item</th>
-                                <th>Nombre del estudiante</th>
-                                <th>Disciplina</th>
-                                <th>No. de resolución</th>
-                                <th>Estado</th>
-                                <th>Fecha de registro</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {students.map((student, index) => (
-                                <tr key={student.id}>
-                                    <td>{student.id}</td>
-                                    <td>{index + 1}</td>
-                                    <td className="table-wrap__strong">{student.name}</td>
-                                    <td>{student.discipline}</td>
-                                    <td>Resolución N° 2023-0{index + 4}</td>
-                                    <td>
-                                        <span className={student.status === 'Activo' ? 'status status--active' : 'status status--inactive'}>
-                                            {student.status}
-                                        </span>
-                                    </td>
-                                    <td>0{index + 1}/09/2014</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
         </div>
     )
 }

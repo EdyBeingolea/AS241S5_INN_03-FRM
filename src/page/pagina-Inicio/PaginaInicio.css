@@ -261,16 +261,29 @@
 .report-panel__frame {
 	position: relative;
 	width: 100%;
-	overflow: hidden;
 	border-radius: 16px;
-	min-height: 700px;
 	background: #fff;
+	/* Responsive container height: caps to viewport to avoid overflow of the page */
+	height: min(70vh, 900px);
+	min-height: 280px;
+	overflow: auto; /* enable internal scrolling if iframe content is larger */
+}
+
+/* Variant sizes you can toggle from JSX */
+.report-panel__frame--small {
+	height: min(40vh, 520px);
+	min-height: 200px;
+}
+
+.report-panel__frame--large {
+	height: min(85vh, 1100px);
+	min-height: 420px;
 }
 
 .report-panel__frame iframe {
 	display: block;
 	width: 100%;
-	height: 700px;
+	height: 100%;
 	border: 0;
 }
 
