@@ -63,7 +63,6 @@ function PaginaDeporte() {
                 <div className="disciplinary-hero__copy">
                     <p className="eyebrow">Reporte de deportes</p>
                     <h2>Inscripciones por disciplina</h2>
-                    <p>Resumen actualizado desde el endpoint de deportes con enfoque visual en volumen y ranking.</p>
                 </div>
                 <div className="disciplinary-hero__stats">
                     <article className="disciplinary-stat">

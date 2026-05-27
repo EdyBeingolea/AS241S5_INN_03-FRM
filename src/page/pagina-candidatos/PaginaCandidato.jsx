@@ -133,8 +133,8 @@ function PaginaCandidato() {
                     <h2>Registros estudiantiles</h2>
                     <p>Alta, edición y seguimiento de candidatos inscritos.</p>
                 </div>
-                <button type="button" className="button button--primary">Crear registro</button>
-            </div>
+{/*                 <button type="button" className="button button--primary">Crear registro</button>
+ */}            </div>
 
             <section className="records-grid">
                 <article className="panel">
