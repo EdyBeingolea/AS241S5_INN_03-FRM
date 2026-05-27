@@ -1,57 +1,90 @@
+import React, { useEffect, useMemo, useState } from 'react'
 import './PaginaDeporte.css'
-
-const reportUrl = 'https://lookerstudio.google.com/embed/reporting/e054b3f0-0ad8-42c7-8d03-acd9526f5f97'
-
-const sanciones = [
-    { title: 'Advertencia verbal', detail: 'Fútbol - aula B', state: 'Pendiente' },
-    { title: 'Resolución emitida', detail: 'Ajedrez - expediente 22', state: 'Aplicada' },
-    { title: 'Caso en revisión', detail: 'Natación - jornada vespertina', state: 'Revisión' },
-]
+import { listaDeportes } from '../../core/service/deporteService'
 
 function PaginaDeporte() {
-    return (
-        <div className="disciplinary-page">
-            <div className="records-page__header">
-                <div>
-                    <p className="eyebrow">Control disciplinario</p>
-                    <h2>Sanciones y resoluciones</h2>
-                    <p>Espacio modular para seguimiento de incidencias y medidas aplicadas.</p>
-                </div>
-                <button type="button" className="button button--ghost">Generar resolución</button>
-            </div>
+    const [deportes, setDeportes] = useState([])
+    const [totalPersonas, setTotalPersonas] = useState(0)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
+    useEffect(() => {
+        const cargar = async () => {
+            try {
+                setLoading(true)
+                const res = await listaDeportes()
+                setDeportes(Array.isArray(res?.data) ? res.data : [])
+                setTotalPersonas(res?.total_personas || 0)
+                setError(null)
+            } catch (err) {
+                setError(err.message || 'Error al cargar deportes')
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        cargar()
+    }, [])
+
+    const topDeporte = useMemo(() => {
+        if (!deportes.length) return 'Sin datos'
+        return deportes[0].nombre
+    }, [deportes])
+
+    let listContent
+
+    if (loading) {
+        listContent = <p>Cargando deportes...</p>
+    } else if (error) {
+        listContent = <p className="text-error">Error: {error}</p>
+    } else if (deportes.length === 0) {
+        listContent = <p>No hay deportes para mostrar.</p>
+    } else {
+        listContent = (
             <section className="disciplinary-grid">
-                {sanciones.map((item) => (
-                    <article key={item.title} className="panel disciplinary-card">
+                {deportes.map((item, index) => (
+                    <article key={item.id} className="panel disciplinary-card">
                         <div>
-                            <p className="disciplinary-card__title">{item.title}</p>
-                            <p>{item.detail}</p>
+                            <p className="disciplinary-card__title">{item.nombre}</p>
+                            <p className="disciplinary-card__detail">{item.cantidad} inscritos</p>
                         </div>
-                        <span className={item.state === 'Aplicada' ? 'status status--active' : 'status status--pending'}>
-                            {item.state}
+                        <span className={index < 3 ? 'disciplinary-rank disciplinary-rank--top' : 'disciplinary-rank'}>
+                            #{index + 1}
                         </span>
                     </article>
                 ))}
             </section>
+        )
+    }
 
-            <section className="panel">
-                <div className="panel__header">
-                    <div>
-                        <h3>Flujo del expediente</h3>
-                        <p>Bloque modular para integrar observaciones, documentos y firmas.</p>
-                    </div>
+    return (
+        <div className="disciplinary-page">
+            <div className="disciplinary-hero">
+                <div className="disciplinary-hero__copy">
+                    <p className="eyebrow">Reporte de deportes</p>
+                    <h2>Inscripciones por disciplina</h2>
+                    <p>Resumen actualizado desde el endpoint de deportes con enfoque visual en volumen y ranking.</p>
                 </div>
+                <div className="disciplinary-hero__stats">
+                    <article className="disciplinary-stat">
+                        <span>Total personas</span>
+                        <strong>{totalPersonas}</strong>
+                    </article>
+                    <article className="disciplinary-stat">
+                        <span>Disciplinas</span>
+                        <strong>{deportes.length}</strong>
+                    </article>
+                    <article className="disciplinary-stat">
+                        <span>Top disciplina</span>
+                        <strong>{topDeporte}</strong>
+                    </article>
+                </div>
+            </div>
 
-                <ol className="timeline">
-                    <li>Recepción del reporte</li>
-                    <li>Validación del caso</li>
-                    <li>Emisión de resolución</li>
-                    <li>Seguimiento posterior</li>
-                </ol>
-            </section>
+            {listContent}
 
         </div>
     )
 }
 
-export default PaginaDeporte;
+export default PaginaDeporte

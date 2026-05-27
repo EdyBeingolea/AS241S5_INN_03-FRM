@@ -3,6 +3,58 @@
 	gap: 18px;
 }
 
+.disciplinary-hero {
+	display: grid;
+	gap: 16px;
+	padding: 22px;
+	border-radius: 24px;
+	border: 1px solid rgba(28, 38, 62, 0.12);
+	background:
+		radial-gradient(circle at 95% 15%, rgba(49, 99, 201, 0.16), transparent 48%),
+		radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.12), transparent 46%),
+		linear-gradient(135deg, #ffffff, #f5f8ff);
+	box-shadow: 0 18px 42px rgba(19, 34, 68, 0.08);
+}
+
+.disciplinary-hero__copy p {
+	margin: 0;
+	color: var(--muted);
+}
+
+.disciplinary-hero__copy h2 {
+	margin: 8px 0;
+	font-size: clamp(1.4rem, 2vw, 1.9rem);
+	color: var(--primary);
+}
+
+.disciplinary-hero__stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.disciplinary-stat {
+	display: grid;
+	gap: 4px;
+	padding: 14px;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(19, 34, 68, 0.08);
+}
+
+.disciplinary-stat span {
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: var(--muted);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.disciplinary-stat strong {
+	font-size: 1.15rem;
+	color: var(--text);
+}
+
 .disciplinary-grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -14,6 +66,11 @@
 	align-items: start;
 	justify-content: space-between;
 	gap: 16px;
+	padding: 16px;
+	border-radius: 18px;
+	background: linear-gradient(170deg, rgba(255, 255, 255, 0.98), rgba(247, 249, 255, 0.98));
+	border: 1px solid rgba(19, 34, 68, 0.08);
+	box-shadow: 0 10px 24px rgba(19, 34, 68, 0.06);
 }
 
 .disciplinary-card__title {
@@ -21,6 +78,30 @@
 	font-size: 1rem;
 	font-weight: 800;
 	color: var(--text);
+}
+
+.disciplinary-card__detail {
+	margin: 0;
+	color: var(--muted);
+	font-weight: 600;
+}
+
+.disciplinary-rank {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 44px;
+	height: 32px;
+	padding: 0 10px;
+	border-radius: 999px;
+	background: #1f2937;
+	color: #ffffff;
+	font-weight: 800;
+}
+
+.disciplinary-rank--top {
+	background: linear-gradient(90deg, #1d4ed8, #2563eb);
+	color: #fff;
 }
 
 .timeline {
@@ -48,6 +129,14 @@
 }
 
 @media (max-width: 960px) {
+	.disciplinary-hero__stats,
+	.disciplinary-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 700px) {
+	.disciplinary-hero__stats,
 	.disciplinary-grid {
 		grid-template-columns: 1fr;
 	}
