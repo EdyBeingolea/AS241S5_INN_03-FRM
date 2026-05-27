@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './PaginaCandidato.css'
 import { listaCandidato } from '../../core/service/candidatoService'
+import CandidatoVerDetalle from './ver-detalle/candidato-ver-detalle'
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20, 50]
 
@@ -13,6 +14,8 @@ function PaginaCandidato() {
     const [totalRegistros, setTotalRegistros] = useState(0)
     const [limite, setLimite] = useState(10)
     const [estadoFiltro, setEstadoFiltro] = useState('todos')
+    const [detalleAbierto, setDetalleAbierto] = useState(false)
+    const [candidatoSeleccionado, setCandidatoSeleccionado] = useState(null)
 
     const cargarRegistros = async (pagina = 1, pageSize = limite, filtro = estadoFiltro) => {
         try {
@@ -49,6 +52,16 @@ function PaginaCandidato() {
         setPaginaActual(1)
     }
 
+    const abrirDetalle = (registro) => {
+        setCandidatoSeleccionado(registro)
+        setDetalleAbierto(true)
+    }
+
+    const cerrarDetalle = () => {
+        setDetalleAbierto(false)
+        setCandidatoSeleccionado(null)
+    }
+
     let tableContent
 
     if (loading) {
@@ -79,7 +92,9 @@ function PaginaCandidato() {
                                 </span>
                             </td>
                             <td>
-                                <button type="button" className="text-link">Ver</button>
+                                <button type="button" className="text-link" onClick={() => abrirDetalle(registro)}>
+                                    Ver
+                                </button>
                             </td>
                         </tr>
                     ))}
@@ -205,6 +220,12 @@ function PaginaCandidato() {
                     </span>
                 </div>
             </section>
+
+            <CandidatoVerDetalle
+                open={detalleAbierto}
+                candidato={candidatoSeleccionado}
+                onClose={cerrarDetalle}
+            />
         </div>
     )
 }
